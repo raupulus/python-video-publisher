@@ -1,7 +1,5 @@
 # python-video-publisher
 
-Work In Progress
-
 Este proyecto pretende ser una herramienta para ayudar a subir vídeos a sitios webs
 y redes sociales pudiendo enviar una petición también a api propia en la que asociar
 estos vídeos a contenido.
@@ -10,13 +8,21 @@ El origen de los datos será vía un json con el mismo nombre que el vídeo, par
 de esta forma tener todos los metadatos necesarios tanto al subir el vídeo como
 al comunicar en nuestra api que lo hemos asociado y cuáles son sus datos.
 
-Los datos recibidos son:
+Los datos recibidos en ese JSON son:
 
 - title: Título del vídeo
 - description
 - tags: Lista de etiquetas en un array para asociarlas al vídeo subido.
 
-# Modo de uso
+## Google Cloud y YouTube Data API
+
+Para poder conectar con la api de youtube y subir vídeos necesitamos primero configurar en nuestro panel un
+proyecto para ello.
+
+El tipo de aplicación que recomiendo para Oauth 2.0 es "Desktop Client" ya que permitirá trabajar offline sin
+webhooks ni callback que controlar desde una plataforma web o similar.
+
+## Modo de uso
 
 Para realizar la subida de un vídeo podemos utilizar la siguiente sintaxis:
 
