@@ -22,6 +22,7 @@ args = parser.parse_args()
 config = vars(args)
 
 file = config.get('file')
+file_name = file.split('/')[-1]
 move_to = config.get('move_to') or OUTPUT_PATH
 title = file.split('.')[0].split('/')[-1]
 file_json = file.replace(file.split('.')[-1], 'json')
@@ -95,16 +96,16 @@ if video_id and API_UPLOAD and json_data.get('batch_id'):
 
 
 if video_id and move_to:
-    os.rename(file, move_to + '/' + file)
+    os.rename(file, move_to + '/' + file_name)
 
     if file_json:
-        os.rename(file_json, move_to + '/' + file_json)
+        os.rename(file_json, move_to + '/' + file_name.replace(file_name.split('.')[-1], 'json'))
 
     if file_md:
-        os.rename(file_md, move_to + '/' + file_md)
+        os.rename(file_md, move_to + '/' + file_name.replace(file_name.split('.')[-1], 'md'))
 
     if file_txt:
-        os.rename(file_txt, move_to + '/' + file_txt)
+        os.rename(file_txt, move_to + '/' + file_name.replace(file_name.split('.')[-1], 'txt'))
 
     print("File moved successfully!")
 

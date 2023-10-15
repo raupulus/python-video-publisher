@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 import os
-from dotenv import load_dotenv
 import random
+from time import sleep
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -21,6 +22,19 @@ if not files or not len(files):
     exit(0)
 
 ## Obtengo varios archivos aleatorios
-random_files = random.sample(files, RANDOM_QUANTITY)
+random_files = random.sample(files, RANDOM_QUANTITY if RANDOM_QUANTITY < len(files) else len(files))
 
 print(random_files)
+
+
+print("Ejecutando comando principal...")
+print(f"Archivos aleatorios: {random_files}")
+print(f"Salida: \'{OUTPUT_PATH}\'")
+
+## Ejecuto el comando principal enviando los archivos aleatorios
+for file in random_files:
+    print('Ejecutando comando: python3 main.py --file=\'%s\' --move-to=\'%s\'' % (file, OUTPUT_PATH))
+    os.system(f"python3 main.py --file=\'{file}\' --move-to=\'{OUTPUT_PATH}\'")
+
+    ## Espero un tiempo aleatorio antes de ejecutar el siguiente comando
+    sleep(random.randint(37, 158))
