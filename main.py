@@ -11,6 +11,7 @@ load_dotenv()
 
 DEBUG = os.getenv("DEBUG")
 API_UPLOAD = os.getenv("API_UPLOAD")
+OUTPUT_PATH = os.getenv("OUTPUT_PATH")
 
 parser = argparse.ArgumentParser(description="Tool for upload video to Youtube", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
@@ -21,7 +22,7 @@ args = parser.parse_args()
 config = vars(args)
 
 file = config.get('file')
-move_to = config.get('move_to')
+move_to = config.get('move_to') or OUTPUT_PATH
 title = file.split('.')[0].split('/')[-1]
 file_json = file.replace(file.split('.')[-1], 'json')
 file_md = file.replace(file.split('.')[-1], 'md')
@@ -93,7 +94,7 @@ if video_id and API_UPLOAD and json_data.get('batch_id'):
     api.update_video_info(params)
 
 
-if move_to:
+if video_id and move_to:
     os.rename(file, move_to + '/' + file)
 
     if file_json:
@@ -104,6 +105,7 @@ if move_to:
 
     if file_txt:
         os.rename(file_txt, move_to + '/' + file_txt)
+
     print("File moved successfully!")
 
 
