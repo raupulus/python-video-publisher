@@ -12,9 +12,17 @@ al comunicar en nuestra api que lo hemos asociado y cuáles son sus datos.
 
 Los datos recibidos son:
 
-*Work in Progress*
+- title: Título del vídeo
+- description
+- tags: Lista de etiquetas en un array para asociarlas al vídeo subido.
 
+# Modo de uso
 
-## TODO
+Para realizar la subida de un vídeo podemos utilizar la siguiente sintaxis:
 
-- [] Parametrizar categoría del vídeo, analizar cuáles son las disponibles en youtube y tener un array de conversión de forma que reciba una categoría que puede ser distinta en varias redes y traducirla a cada plataforma. EJ: en youtube por defecto tenemos la categoría con id "22" pero en vimeo puede ser otro.
+```bash
+python3 main.py --file="path" --move-to="new_path"
+```
+
+El parámetro del archivo fuente es obligatorio mientras mover queda como opcional.
+Mover el vídeo puede ser util si automatizamos directorios por lotes para ir descartando fuera de este los ya subidos.
