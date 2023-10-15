@@ -17,7 +17,7 @@ from oauth2client.tools import argparser, run_flow
 # we are handling retry logic ourselves.
 httplib2.RETRIES = 1
 
-class YouTube:
+class Youtube:
     # Maximum number of times to retry before giving up.
     MAX_RETRIES = 10
 
@@ -50,33 +50,26 @@ class YouTube:
 
     VALID_PRIVACY_STATUSES = ("public", "private", "unlisted")
 
+    def upload(self, options):
 
+        if options.get('tags') and isinstance(options.get('tags'), str):
+            options['tags'] = options.get('tags').split(",")
 
-    def __init__(self):
-        pass
+        if options.get('privacy_status') and not options.get('privacy_status') in self.VALID_PRIVACY_STATUSES:
+            options['privacy_status'] = self.VALID_PRIVACY_STATUSES[1]
 
-    def upload(self, video_file, title, description, category, keywords = None, privacy_status = 'private'):
+        if not os.path.exists(options.get('file')):
+            print("Please specify a valid file path.")
 
-        params = {
-            'file': video_file,
-            'title': title,
-            'description': description,
-            'category': category,
-            'keywords': keywords,
-            'privacyStatus': privacy_status
-        }
+            return None
 
-        if not os.path.exists(params.file):
-            exit("Please specify a valid file path.")
+        youtube = self.get_authenticated_service(options)
 
-            youtube = get_authenticated_service(params)
-
-            try:
-                initialize_upload(youtube, params)
-            except HttpError as e:
-                print("An HTTP error %d occurred:\n%s" % (e.resp.status, e.content))
-
-
+        try:
+            return self.initialize_upload(youtube, options)
+        except HttpError as e:
+            print("An HTTP error %d occurred:\n%s" % (e.resp.status, e.content))
+            return None
 
     def get_authenticated_service(self, args):
         flow = flow_from_clientsecrets(self.CLIENT_SECRETS_FILE,
@@ -94,21 +87,16 @@ class YouTube:
 
 
     def initialize_upload(self, youtube, options):
-        tags = None
-
-        if options.keywords:
-            tags = options.keywords.split(",")
-
         body = dict(
             snippet=dict(
-                title=options.title,
-                description=options.description,
-                tags=tags,
-                categoryId=options.category,
+                title=options.get('title'),
+                description=options.get('description'),
+                tags=options.get('tags'),
+                categoryId=options.get('category'),
 
             ),
             status=dict(
-                privacyStatus=options.privacyStatus
+                privacyStatus=options.get('privacy_status')
             )
         )
 
@@ -127,33 +115,35 @@ class YouTube:
             # practice, but if you're using Python older than 2.6 or if you're
             # running on App Engine, you should set the chunksize to something like
             # 1024 * 1024 (1 megabyte).
-            media_body=MediaFileUpload(options.file, chunksize=-1, resumable=True)
+            media_body=MediaFileUpload(options.get('file'), chunksize=-1, resumable=True)
         )
 
-        resumable_upload(insert_request)
+        return self.resumable_upload(insert_request)
 
     # This method implements an exponential backoff strategy to resume a
     # failed upload.
 
-
-    def resumable_upload(insert_request):
+    def resumable_upload(self, insert_request):
         response = None
         error = None
         retry = 0
+
         while response is None:
             try:
                 print("Uploading file...")
                 status, response = insert_request.next_chunk()
                 if response is not None:
                     if 'id' in response:
+                        print(f"Response: {response}")
                         print("Video id '%s' was successfully uploaded." %
                             response['id'])
+                        return response['id']
                     else:
-                        exit("The upload failed with an unexpected response: %s" % response)
+                        print("The upload failed with an unexpected response: %s" % response)
+                        return None
             except HttpError as e:
                 if e.resp.status in self.RETRIABLE_STATUS_CODES:
-                    error = "A retriable HTTP error %d occurred:\n%s" % (e.resp.status,
-                                                                        e.content)
+                    error = "A retriable HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
                 else:
                     raise
             except self.RETRIABLE_EXCEPTIONS as e:
@@ -162,10 +152,13 @@ class YouTube:
             if error is not None:
                 print(error)
                 retry += 1
+
                 if retry > self.MAX_RETRIES:
                     exit("No longer attempting to retry.")
 
                 max_sleep = 2 ** retry
                 sleep_seconds = random.random() * max_sleep
+
                 print("Sleeping %f seconds and then retrying..." % sleep_seconds)
+
                 time.sleep(sleep_seconds)

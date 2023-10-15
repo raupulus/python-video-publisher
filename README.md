@@ -17,4 +17,4 @@ Los datos recibidos son:
 
 ## TODO
 
-- [] Parametrizar categoría del vídeo, analizar cuáles son las disponibles en youtube y tener un array de conversión de forma que reciba una categoría que puede ser distinta en varias redes y traducirla a cada plataforma. EJ: en youtube entretenimiento es id "22" pero en vimeo puede ser otro.
+- [] Parametrizar categoría del vídeo, analizar cuáles son las disponibles en youtube y tener un array de conversión de forma que reciba una categoría que puede ser distinta en varias redes y traducirla a cada plataforma. EJ: en youtube por defecto tenemos la categoría con id "22" pero en vimeo puede ser otro.
