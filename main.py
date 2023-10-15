@@ -12,8 +12,16 @@ load_dotenv()
 DEBUG = os.getenv("DEBUG")
 API_UPLOAD = os.getenv("API_UPLOAD")
 
+parser = argparse.ArgumentParser(description="Tool for upload video to Youtube", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-file = 'test/1f58 - Visions of the Dark Oracle in Surreal Sojourn.mp4'
+parser.add_argument("--file", help="Archivo de vídeo a subir", required=True)
+parser.add_argument("--move-to", help="Directorio donde se moverá el archivo de vídeo subido", default=None)
+
+args = parser.parse_args()
+config = vars(args)
+
+file = config.get('file')
+move_to = config.get('move_to')
 title = file.split('.')[0].split('/')[-1]
 file_json = file.replace(file.split('.')[-1], 'json')
 file_md = file.replace(file.split('.')[-1], 'md')
@@ -68,19 +76,11 @@ options = {
     "tags": json_data.get('tags') if json_data else []
 }
 
-print(options)
-print("")
-print("")
-
-#youtube = Youtube()
-#video_id = youtube.upload(options)
-
-
-video_id = 'SCZKXtziqq8'
+youtube = Youtube()
+video_id = youtube.upload(options)
 
 if video_id:
     print("Video uploaded successfully! ID: " + video_id)
-
 
 if video_id and API_UPLOAD and json_data.get('batch_id'):
     params = {
@@ -91,3 +91,20 @@ if video_id and API_UPLOAD and json_data.get('batch_id'):
 
     api = Api()
     api.update_video_info(params)
+
+
+if move_to:
+    os.rename(file, move_to + '/' + file)
+
+    if file_json:
+        os.rename(file_json, move_to + '/' + file_json)
+
+    if file_md:
+        os.rename(file_md, move_to + '/' + file_md)
+
+    if file_txt:
+        os.rename(file_txt, move_to + '/' + file_txt)
+    print("File moved successfully!")
+
+
+exit(0)
