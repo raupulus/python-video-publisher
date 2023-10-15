@@ -134,12 +134,12 @@ class Youtube:
                 status, response = insert_request.next_chunk()
                 if response is not None:
                     if 'id' in response:
-                        print(f"Response: {response}")
-                        print("Video id '%s' was successfully uploaded." %
-                            response['id'])
+                        #print(f"Response: {response}")
+                        #print("Video id '%s' was successfully uploaded." % response['id'])
                         return response['id']
                     else:
                         print("The upload failed with an unexpected response: %s" % response)
+
                         return None
             except HttpError as e:
                 if e.resp.status in self.RETRIABLE_STATUS_CODES:
