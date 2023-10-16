@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import httplib2
 import os
@@ -69,6 +70,12 @@ class Youtube:
             return self.initialize_upload(youtube, options)
         except HttpError as e:
             print("An HTTP error %d occurred:\n%s" % (e.resp.status, e.content))
+
+            ## Almaceno error en el histórico
+            write_file = open("error.log", "a")
+            write_file.write("\n\nAn HTTP error %d occurred:\n%s\n\n" % (e.resp.status, e.content))
+            write_file.close()
+
             return None
 
     def get_authenticated_service(self, args):

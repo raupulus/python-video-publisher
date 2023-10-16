@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import json
@@ -24,7 +25,7 @@ config = vars(args)
 file = config.get('file')
 file_name = file.split('/')[-1]
 move_to = config.get('move_to') or OUTPUT_PATH
-title = file.split('.')[0].split('/')[-1]
+title = file.split('/')[-1].split('.')[0]
 file_json = file.replace(file.split('.')[-1], 'json')
 file_md = file.replace(file.split('.')[-1], 'md')
 file_txt = file.replace(file.split('.')[-1], 'txt')
@@ -70,7 +71,7 @@ if not tags and json_data.get('metatags'):
 
 options = {
     "file": file,
-    "title": json_data.get('title') if json_data else title,
+    "title": json_data.get('title')[0:99] if json_data else title[0:99],
     "description": description,
     "video_file": file,
     "privacy_status": "public",
@@ -83,6 +84,13 @@ video_id = youtube.upload(options)
 
 if video_id:
     print("Video uploaded successfully! ID: " + video_id)
+else:
+    print("Video upload failed!")
+
+    ## Alamceno fallo en el histórico
+    write_file = open("historical.log", "a")
+    write_file.write("\nFail: " + file + "\n")
+    write_file.close()
 
 if video_id and API_UPLOAD and json_data.get('batch_id'):
     params = {
@@ -92,6 +100,7 @@ if video_id and API_UPLOAD and json_data.get('batch_id'):
     }
 
     api = Api()
+    print("API Updating video info...")
     api.update_video_info(params)
 
 

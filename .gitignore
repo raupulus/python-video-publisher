@@ -169,3 +169,5 @@ env.py
 /client_secret.json
 /client_secrets.json
 /main.py-oauth2.json
+/historical.log
+/error.log
