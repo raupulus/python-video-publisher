@@ -171,3 +171,4 @@ env.py
 /main.py-oauth2.json
 /historical.log
 /error.log
+/test_uploader.py

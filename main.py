@@ -55,7 +55,7 @@ if file_json:
 
 if json_data:
     description += json_data.get('description')
-    description += "\n\nEach image in this video has been generated with Stable Diffusion in an automated way, trying to be unique in the world.\nThe description to create the image is generated from models trained by Roles with a pattern of randomness using different AIs such as GPT Instruct.\nOnce I have generated a batch of images with different seeds for the same description, I use ffmpeg to also automatically generate this video.\n\nWesite with all images and seeds: https://aidyslexic.raupulus.dev\nTwitter: https://twitter.com/ai_automations\nAuthor Website: https://raupulus.dev\nTool for generate prompts: https://github.com/raupulus/python-ai-image-from-api-generator\nTool ffmpeg slideshow: https://github.com/raupulus/ffmpeg-slideshow-from-image-directory\n\n"
+    description += "\n\nEach image in this video has been generated with Stable Diffusion in an automated way, trying to be unique in the world.\nThe description to create the image is generated from models trained by Roles with a pattern of randomness using different AIs such as GPT Instruct.\nOnce I have generated a batch of images with different seeds for the same description, I use ffmpeg to also automatically generate this video.\n\nWebsite with all images and seeds: https://aidyslexic.raupulus.dev\nTwitter: https://twitter.com/ai_automations\nAuthor Website: https://raupulus.dev\nTool for generate prompts: https://github.com/raupulus/python-ai-image-from-api-generator\nTool ffmpeg slideshow: https://github.com/raupulus/ffmpeg-slideshow-from-image-directory\n\n"
 
 if file_txt:
     with open(file_txt, 'r') as f:

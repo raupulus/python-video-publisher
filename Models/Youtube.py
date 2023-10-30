@@ -13,6 +13,7 @@ from apiclient.http import MediaFileUpload
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
+from oauth2client import client, GOOGLE_TOKEN_URI
 
 # Explicitly tell the underlying HTTP transport library not to retry, since
 # we are handling retry logic ourselves.
@@ -86,8 +87,37 @@ class Youtube:
         storage = Storage("%s-oauth2.json" % sys.argv[0])
         credentials = storage.get()
 
+
+        """
+        class obj(object):
+            def __init__(self, d):
+                for k, v in d.items():
+                    if isinstance(k, (list, tuple)):
+                        setattr(self, k, [obj(x) if isinstance(x, dict) else x for x in v])
+                    else:
+                        setattr(self, k, obj(v) if isinstance(v, dict) else v)
+        """
+
+        #args = obj(args)
+        #args = argparser.parse_args()
+
+        print(args)
+
+
         if credentials is None or credentials.invalid:
             credentials = run_flow(flow, storage, args)
+
+            """
+            credentials = client.OAuth2Credentials(
+                access_token = credentials.access_token,
+                client_id = credentials.client_id,
+                client_secret = credentials.client_secret,
+                refresh_token = credentials.refresh_token,
+                token_expiry = credentials.token_expiry,
+                token_uri = GOOGLE_TOKEN_URI,
+                user_agent= "Mozilla/5.0 (X11; Linux i686; rv:109.0) Gecko/20100101 Firefox/118.0",
+                revoke_uri= None)
+            """
 
         return build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
                     http=credentials.authorize(httplib2.Http()))
