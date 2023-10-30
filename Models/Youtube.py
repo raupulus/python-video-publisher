@@ -88,24 +88,18 @@ class Youtube:
         credentials = storage.get()
 
 
-        """
-        class obj(object):
-            def __init__(self, d):
-                for k, v in d.items():
-                    if isinstance(k, (list, tuple)):
-                        setattr(self, k, [obj(x) if isinstance(x, dict) else x for x in v])
-                    else:
-                        setattr(self, k, obj(v) if isinstance(v, dict) else v)
-        """
+        ## Previene errores de configuración para servidor local, internamente los asigna
+        ## También el nivel de log y otros parámetros que manualmente eran algo confuso.
+        ## Como en esta parte no se necesitan datos del vídeo, si no que solo es autenticación del usuario dónde
+        ## se publicará posteriormente, podemos permitirnos esta pequeña trampa de usar argumentos con solo los
+        ## argumento de paquete "oauth2client.tools"
+        argConvert, unknown = argparser.parse_known_args()
 
-        #args = obj(args)
-        #args = argparser.parse_args()
 
-        print(args)
 
 
         if credentials is None or credentials.invalid:
-            credentials = run_flow(flow, storage, args)
+            credentials = run_flow(flow, storage, argConvert)
 
             """
             credentials = client.OAuth2Credentials(
