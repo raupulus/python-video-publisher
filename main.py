@@ -31,8 +31,9 @@ file_md = file.replace(file.split('.')[-1], 'md')
 file_txt = file.replace(file.split('.')[-1], 'txt')
 json_data = None
 
+
 if not os.path.isfile(file):
-    print('File Video not found')
+    print('File Video not found: ' + file)
     exit(1)
 
 if not os.path.isfile(file_json):

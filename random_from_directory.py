@@ -34,8 +34,9 @@ print(f"Salida: \'{OUTPUT_PATH}\'")
 
 ## Ejecuto el comando principal enviando los archivos aleatorios
 for file in random_files:
-    print('Ejecutando comando: python3 main.py --file=\'%s\' --move-to=\'%s\'' % (file, OUTPUT_PATH))
-    os.system(f"python3 main.py --file=\'{file}\' --move-to=\'{OUTPUT_PATH}\'")
+
+    print('Ejecutando comando: python3 main.py --file=\"%s\" --move-to=\'%s\'' % (file, OUTPUT_PATH))
+    os.system(f"python3 main.py --file=\"{file}\" --move-to=\'{OUTPUT_PATH}\'")
 
     ## Espero un tiempo aleatorio antes de ejecutar el siguiente comando
     sleep(random.randint(37, 158))
