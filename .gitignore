@@ -172,3 +172,5 @@ env.py
 /historical.log
 /error.log
 /test_uploader.py
+/cookies.txt
+/tiktok_cookies.txt

@@ -3,3 +3,4 @@ google-auth==2.16.0
 google-auth-httplib2
 google-auth-oauthlib
 oauth2client
+tiktok-uploader

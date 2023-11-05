@@ -6,6 +6,7 @@ import json
 import argparse
 from dotenv import load_dotenv
 from Models.Youtube import Youtube
+from Models.TikTok import TikTok
 from Models.Api import Api
 
 load_dotenv()
@@ -13,6 +14,7 @@ load_dotenv()
 DEBUG = os.getenv("DEBUG")
 API_UPLOAD = os.getenv("API_UPLOAD")
 OUTPUT_PATH = os.getenv("OUTPUT_PATH")
+TIKTOK_PUBLISH = os.getenv("TIKTOK_PUBLISH")
 
 parser = argparse.ArgumentParser(description="Tool for upload video to Youtube", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
@@ -104,6 +106,14 @@ if video_id and API_UPLOAD and json_data.get('batch_id'):
     print("API Updating video info...")
     api.update_video_info(params)
 
+## Subo vídeo a TikTok
+if TIKTOK_PUBLISH:
+    try:
+        tiktok = TikTok()
+        tiktok.upload(options)
+    except Exception as e:
+        print("TikTok upload failed!")
+        print(e)
 
 if video_id and move_to:
     os.rename(file, move_to + '/' + file_name)
