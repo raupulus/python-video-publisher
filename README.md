@@ -32,3 +32,10 @@ python3 main.py --file="path" --move-to="new_path"
 
 El parámetro del archivo fuente es obligatorio mientras mover queda como opcional.
 Mover el vídeo puede ser util si automatizamos directorios por lotes para ir descartando fuera de este los ya subidos.
+
+
+## Random desde directorio
+
+```bash
+python3 script.py --file="my_file_path" --move-to="destination_directory" --quantity=5
+```

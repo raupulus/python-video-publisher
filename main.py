@@ -69,7 +69,7 @@ elif file_md:
 
 tags = json_data.get('tags') if json_data else []
 
-if not tags and json_data.get('metatags'):
+if not tags and json_data and json_data.get('metatags'):
     tags = json_data.get('metatags')
 
 options = {
@@ -90,12 +90,12 @@ if video_id:
 else:
     print("Video upload failed!")
 
-    ## Alamceno fallo en el histórico
+    ## Almaceno fallo en el histórico
     write_file = open("historical.log", "a")
     write_file.write("\nFail: " + file + "\n")
     write_file.close()
 
-if video_id and API_UPLOAD and json_data.get('batch_id'):
+if video_id and API_UPLOAD and json_data and json_data.get('batch_id'):
     params = {
         "batch_id": json_data.get('batch_id'),
         "video_id": video_id,
@@ -107,6 +107,7 @@ if video_id and API_UPLOAD and json_data.get('batch_id'):
     api.update_video_info(params)
 
 ## Subo vídeo a TikTok
+"""
 if TIKTOK_PUBLISH:
     try:
         tiktok = TikTok()
@@ -114,6 +115,7 @@ if TIKTOK_PUBLISH:
     except Exception as e:
         print("TikTok upload failed!")
         print(e)
+"""
 
 if video_id and move_to:
     os.rename(file, move_to + '/' + file_name)
