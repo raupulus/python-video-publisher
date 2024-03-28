@@ -60,4 +60,8 @@ for file in selected_files:
     file, OUTPUT_PATH))
     os.system(f"python3 main.py --file=\"{file}\" --move-to=\'{OUTPUT_PATH}\'")
 
-    sleep(random.randint(37, 158))
+    # Add conditional sleep
+    if RANDOM_QUANTITY > 1:
+        sleep(random.randint(37, 158))
+    else:
+        sleep(5)  # Wait for 5 seconds if RANDOM_QUANTITY equals 1
